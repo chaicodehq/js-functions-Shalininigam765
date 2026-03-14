@@ -45,13 +45,82 @@
  *   pricer("gold", true)  // => 200 * 1.5 * 1.3 = 390
  */
 export function createDialogueWriter(genre) {
-  // Your code here
+  if (genre === null || genre === undefined || genre !== "action" && genre !== "romance" && genre !== "comedy" && genre !== "drama" ){
+    return null
+  }
+  function getDialogue(hero, villain){
+    if (!hero || !villain){
+      return "..."
+    }
+
+    switch (genre) {
+      case "action":
+        return `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`
+      case "romance":
+        return `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`
+      case "comedy":
+        return `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`
+      case "drama":
+        return `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+      default:
+        return null
+    }
+  }
+  
+  return getDialogue
 }
 
 export function createTicketPricer(basePrice) {
-  // Your code here
+  if (basePrice <= 0){
+      return null
+  }
+  function getPrice(seatType, isWeekend = false){
+
+    let multiplier = 0
+
+    switch (seatType) {
+      case "silver":
+        multiplier = 1
+        break
+      case "gold":
+        multiplier = 1.5
+        break
+      case "platinum":
+        multiplier = 2
+        break
+      default:
+        return null
+    }
+
+    let finalPrice = basePrice * multiplier
+
+    if (isWeekend){
+      finalPrice *= 1.3
+    }
+
+    return Math.round(finalPrice)
+  }
+  
+  return getPrice
 }
 
 export function createRatingCalculator(weights) {
-  // Your code here
+  if (weights === null || weights === undefined || typeof weights !== "object"){
+    return null
+  }
+  function getWeightedRating(scores){
+    let weightedSum = 0
+    let totalWeight = 0
+
+    for (let key in weights){
+      if (weights.hasOwnProperty(key) && scores.hasOwnProperty(key)){
+        weightedSum += weights[key] * scores[key]
+        totalWeight += weights[key]
+      }
+    }
+
+    return Number((weightedSum/totalWeight).toFixed(1))
+  }
+  
+  return getWeightedRating
 }
